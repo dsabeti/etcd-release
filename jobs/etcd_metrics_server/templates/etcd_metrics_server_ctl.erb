@@ -33,7 +33,7 @@ case $1 in
     exec chpst -u vcap:vcap /var/vcap/packages/etcd_metrics_server/bin/etcd-metrics-server \
         -index=<%= spec.index %> \
         -etcdAddress=<%= p("etcd_metrics_server.etcd.machine") %>:<%= p("etcd_metrics_server.etcd.port") %> \
-        -natsAddresses=<%= nats_config["machines"].collect { |addr| "#{addr}:#{nats_config["port"]}" }.join(",") %> \
+        -natsAddresses=<%= nats_config["machines"].collect { |addr| "#{addr}:#{nats_config["port"]}" }.join(", ") %> \
         -natsUsername='<%= nats_config["username"] %>' \
         -natsPassword='<%= nats_config["password"] %>' \
         -port=<%= p("etcd_metrics_server.status.port") %> \
