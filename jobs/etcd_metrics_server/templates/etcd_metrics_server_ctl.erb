@@ -34,7 +34,7 @@ case $1 in
         -index=<%= spec.index %> \
         -etcdAddress=<%= p("etcd_metrics_server.etcd.machine") %>:<%= p("etcd_metrics_server.etcd.port") %> \
         -natsAddresses=<%= nats_config["machines"].collect { |addr| "#{addr}:#{nats_config["port"]}" }.join(",") %> \
-        -natsUsername='<%= nats_config["username"] %>' \
+        -natsUsername='<%= nats_config["user"] %>' \
         -natsPassword='<%= nats_config["password"] %>' \
         -port=<%= p("etcd_metrics_server.status.port") %> \
         -username=<%= p("etcd_metrics_server.status.username") %> \
