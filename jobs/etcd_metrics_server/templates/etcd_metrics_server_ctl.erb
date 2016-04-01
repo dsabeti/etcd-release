@@ -17,12 +17,25 @@ case $1 in
 
     echo $$ > $PIDFILE
 
+    <%
+      nats_config = nil
+      if_link("nats") do |nats|
+        nats_config = {}
+        nats_config["machines"] = nats.p("nats.machines")
+        nats_config["user"] = nats.p("nats.user")
+        nats_config["password"] = nats.p("nats.password")
+        nats_config["port"] = nats.p("nats.port")
+      end
+
+      nats_config = p("nats") unless nats_config
+    %>
+
     exec chpst -u vcap:vcap /var/vcap/packages/etcd_metrics_server/bin/etcd-metrics-server \
         -index=<%= spec.index %> \
         -etcdAddress=<%= p("etcd_metrics_server.etcd.machine") %>:<%= p("etcd_metrics_server.etcd.port") %> \
-        -natsAddresses=<%= p("etcd_metrics_server.nats.machines").collect { |addr| "#{addr}:#{p("etcd_metrics_server.nats.port")}" }.join(",") %> \
-        -natsUsername='<%= p("etcd_metrics_server.nats.username") %>' \
-        -natsPassword='<%= p("etcd_metrics_server.nats.password") %>' \
+        -natsAddresses=<%= nats_config["machines"].collect { |addr| "#{addr}:#{nats_config["port"]}" }.join(",") %> \
+        -natsUsername='<%= nats_config["username"] %>' \
+        -natsPassword='<%= nats_config["password"] %>' \
         -port=<%= p("etcd_metrics_server.status.port") %> \
         -username=<%= p("etcd_metrics_server.status.username") %> \
         -password=<%= p("etcd_metrics_server.status.password") %>
