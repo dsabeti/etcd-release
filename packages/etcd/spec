@@ -1,5 +1,11 @@
 ---
 name: etcd
+provides:
+- name: etcd
+  type: etcd
+  properties:
+  - etcd.machines
+  - etcd.maxconcurrentrequests
 
 dependencies:
   - golang1.6
