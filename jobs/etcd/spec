@@ -1,11 +1,12 @@
 ---
 name: etcd
+
 provides:
-  - name:etcd
-    type:etcd
-    properties:
-    - etcd.machines:
-      description: "Addresses of etcd machines"
+- name: etcd
+  type: etcd
+  properties:
+  - etcd.machines
+  - etcd.maxconcurrentrequests
 
 templates:
   dns_health_check.erb: bin/dns_health_check
@@ -18,6 +19,11 @@ packages:
   - etcd
 
 properties:
+
+  etcd.maxconcurrentrequests:
+    description: ""
+    default: 10
+
   etcd.heartbeat_interval_in_milliseconds:
     description: "Interval between heartbeats in milliseconds. See https://coreos.com/docs/cluster-management/debugging/etcd-tuning"
     default: 50
