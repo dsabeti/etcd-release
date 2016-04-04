@@ -1,5 +1,12 @@
 ---
 name: etcd
+provides:
+  - name:etcd
+    type:etcd
+    properties:
+    - etcd.machines:
+      description: "Addresses of etcd machines"
+
 templates:
   dns_health_check.erb: bin/dns_health_check
   drain: bin/drain
