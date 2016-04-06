@@ -18,16 +18,12 @@ case $1 in
     echo $$ > $PIDFILE
 
     <%
-      nats_config = nil
-      if_link("nats") do |nats|
-        nats_config = {}
-        nats_config["machines"] = nats.p("nats.machines")
-        nats_config["user"] = nats.p("nats.user")
-        nats_config["password"] = nats.p("nats.password")
-        nats_config["port"] = nats.p("nats.port")
-      end
-
-      nats_config = p("nats") unless nats_config
+      nats = link("nats")
+      nats_config = {}
+      nats_config["machines"] = nats.instances.map(&:address)
+      nats_config["user"] = nats.p("nats.user")
+      nats_config["password"] = nats.p("nats.password")
+      nats_config["port"] = nats.p("nats.port")
     %>
 
     exec chpst -u vcap:vcap /var/vcap/packages/etcd_metrics_server/bin/etcd-metrics-server \
